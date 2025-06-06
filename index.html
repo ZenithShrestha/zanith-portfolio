@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZENITH | Motion & Graphic Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Chakra+Petch:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --neon-pink: #ff2ced;
+      --electric-blue: #00f0ff;
+      --acid-green: #c4ff0d;
+      --deep-purple: #1a0033;
+      --black: #0a0a0a;
+      --white: #f0f0f0;
+      --font-main: 'Space Grotesk', sans-serif;
+      --font-accent: 'Chakra Petch', sans-serif;
+      --glow-pink: 0 0 10px #ff2ced, 0 0 20px #ff2ced80;
+      --glow-blue: 0 0 10px #00f0ff, 0 0 20px #00f0ff80;
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    ::selection {
+      background: var(--neon-pink);
+      color: var(--black);
+    }
+
+    .cursor {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--electric-blue);
+      border-radius: 50%;
+      position: fixed;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      mix-blend-mode: difference;
+      z-index: 999;
+      transition: transform 0.1s;
+    }
+
+    .cursor-follower {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--neon-pink);
+      border-radius: 50%;
+      position: fixed;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 998;
+      transition: transform 0.4s, width 0.3s, height 0.3s;
+    }
+
+    header {
+      padding: 2rem 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-family: var(--font-accent);
+      font-size: 1.8rem;
+      font-weight: 600;
+      background: linear-gradient(45deg, var(--neon-pink), var(--electric-blue));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-decoration: none;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1.1rem;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--acid-green);
+      transition: var(--transition);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 5vw;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 600px;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      font-family: var(--font-accent);
+    }
+
+    .hero h1 span {
+      display: inline-block;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: transparent;
+      color: var(--white);
+      border: 2px solid var(--electric-blue);
+      font-family: var(--font-accent);
+      font-size: 1rem;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      transition: var(--transition);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--electric-blue);
+      z-index: -1;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      color: var(--black);
+      box-shadow: var(--glow-blue);
+    }
+
+    .btn:hover::before {
+      left: 0;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 50%;
+      right: 5vw;
+      transform: translateY(-50%);
+      width: 40vw;
+      height: 40vw;
+      max-width: 500px;
+      max-height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--neon-pink) 0%, transparent 60%);
+      filter: blur(60px);
+      opacity: 0.3;
+      animation: float 8s ease-in-out infinite;
+    }
+    .hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 4rem 2rem;
+  gap: 2rem;
+}
+
+.hero-image img {
+  max-width: 500px;
+  width: 100%;
+  height: 100%;;
+  margin-top: 70px;
+
+  transition: transform 0.3s ease;
+}
+
+.hero-image img:hover {
+  transform: scale(1.03);
+}
+
+
+    @keyframes float {
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      50% { transform: translateY(-50%) translateX(20px); }
+    }
+
+    .marquee {
+      white-space: nowrap;
+      overflow: hidden;
+      background: var(--deep-purple);
+      padding: 1rem 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .marquee-content {
+      display: inline-block;
+      animation: marquee 20s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .marquee span {
+      display: inline-block;
+      padding: 0 2rem;
+      font-family: var(--font-accent);
+      font-size: 1.5rem;
+      color: var(--acid-green);
+    }
+
+    .work {
+      padding: 8rem 5vw;
+    }
+
+    .section-title {
+      font-family: var(--font-accent);
+      font-size: 3rem;
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--neon-pink), var(--electric-blue));
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: rgba(30, 30, 30, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: var(--transition);
+      position: relative;
+      aspect-ratio: 4/3;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--glow-pink);
+    }
+
+    .project-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .project-card:hover .project-image {
+      transform: scale(1.05);
+      opacity: 0.7;
+    }
+
+    .project-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    }
+
+    .project-title {
+      font-family: var(--font-accent);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      background: var(--deep-purple);
+      color: var(--electric-blue);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-family: var(--font-accent);
+    }
+
+    .about {
+      padding: 8rem 5vw;
+      background: var(--deep-purple);
+      position: relative;
+    }
+
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    .skill {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--electric-blue);
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-family: var(--font-accent);
+      transition: var(--transition);
+    }
+
+    .skill:hover {
+      background: var(--electric-blue);
+      color: var(--black);
+      box-shadow: var(--glow-blue);
+    }
+
+    .contact {
+      padding: 8rem 5vw;
+      text-align: center;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: var(--transition);
+    }
+
+    .contact-link:hover {
+      color: var(--acid-green);
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 5vw;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Animations */
+    .animate-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: var(--transition);
+    }
+
+    .animate-in.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav ul {
+        gap: 1rem;
+      }
+
+      .hero {
+        text-align: center;
+      }
+
+      .hero-content {
+        margin: 0 auto;
+      }
+
+      .hero-bg {
+        display: none;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <header>
+    <a href="#" class="logo">ZENITH</a>
+    <nav>
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content animate-in">
+
+      <h1>
+        <span>DIGITAL</span>
+        <span>DESIGN WITH</span>
+        <span>GEN-Z ENERGY</span>
+      </h1>
+      <p>I create eye-popping motion graphics and visuals that make brands stand out in the digital noise.</p>
+      <a href="#work" class="btn">View My Work</a>
+    </div>
+    <div class="hero-bg"></div>
+    <div class="hero-image animate-in">
+      <img src="/portfolio/profile.png" alt="Portrait of ZENITH" />
+    </div>
+  </section>
+
+  <div class="marquee">
+    <div class="marquee-content">
+      <span>MOTION DESIGN</span>
+      <span>GRAPHIC DESIGN</span>
+      <span>3D ANIMATION</span>
+      <span>BRAND IDENTITY</span>
+      <span>DIGITAL ART</span>
+      <span>MOTION DESIGN</span>
+      <span>GRAPHIC DESIGN</span>
+      <span>3D ANIMATION</span>
+      <span>BRAND IDENTITY</span>
+      <span>DIGITAL ART</span>
+    </div>
+  </div>
+
+  <section class="work" id="work">
+    <h2 class="section-title animate-in">Selected Work</h2>
+    <div class="projects-grid">
+      <div class="project-card animate-in" style="transition-delay: 0.1s">
+        <img src="https://source.unsplash.com/random/600x400/?motion,design,1" alt="Project 1" class="project-image">
+        <div class="project-info">
+          <h3 class="project-title">Neon Dreams</h3>
+          <div class="project-tags">
+            <span class="tag">After Effects</span>
+            <span class="tag">3D</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-card animate-in" style="transition-delay: 0.2s">
+        <img src="https://source.unsplash.com/random/600x400/?motion,design,2" alt="Project 2" class="project-image">
+        <div class="project-info">
+          <h3 class="project-title">Cyberpunk 2077</h3>
+          <div class="project-tags">
+            <span class="tag">Cinema 4D</span>
+            <span class="tag">Octane</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-card animate-in" style="transition-delay: 0.3s">
+        <img src="https://source.unsplash.com/random/600x400/?motion,design,3" alt="Project 3" class="project-image">
+        <div class="project-info">
+          <h3 class="project-title">Liquid Motion</h3>
+          <div class="project-tags">
+            <span class="tag">Blender</span>
+            <span class="tag">Simulation</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-card animate-in" style="transition-delay: 0.4s">
+        <img src="https://source.unsplash.com/random/600x400/?motion,design,4" alt="Project 4" class="project-image">
+        <div class="project-info">
+          <h3 class="project-title">Glitch Universe</h3>
+          <div class="project-tags">
+            <span class="tag">AE Plugins</span>
+            <span class="tag">Design</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-content">
+      <h2 class="section-title animate-in">About Me</h2>
+      <p class="animate-in" style="transition-delay: 0.1s">Hey! I'm Zara, a 23-year-old motion designer blending digital art with cutting-edge tech to create visuals that pop and move.</p>
+      <p class="animate-in" style="transition-delay: 0.2s">My work lives at the intersection of design and internet culture, inspired by anime, video games, and the chaotic beauty of the digital age.</p>
+      <div class="skills">
+        <span class="skill animate-in" style="transition-delay: 0.3s">After Effects</span>
+        <span class="skill animate-in" style="transition-delay: 0.4s">Cinema 4D</span>
+        <span class="skill animate-in" style="transition-delay: 0.5s">Blender</span>
+        <span class="skill animate-in" style="transition-delay: 0.6s">Illustrator</span>
+        <span class="skill animate-in" style="transition-delay: 0.7s">Photoshop</span>
+        <span class="skill animate-in" style="transition-delay: 0.8s">Figma</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <h2 class="section-title animate-in">Let's Collab</h2>
+    <p class="animate-in" style="transition-delay: 0.1s">Have a project in mind? Hit me up!</p>
+    <div class="contact-links">
+      <a href="mailto:hello@zaracreates.com" class="contact-link animate-in" style="transition-delay: 0.2s">
+        <span>hello@zaracreates.com</span>
+      </a>
+      <a href="https://instagram.com/zaracreates" class="contact-link animate-in" style="transition-delay: 0.3s">
+        <span>@zaracreates</span>
+      </a>
+      <a href="https://dribbble.com/zaracreates" class="contact-link animate-in" style="transition-delay: 0.4s">
+        <span>Dribbble</span>
+      </a>
+    </div>
+  </section>
+
+  <footer class="animate-in" style="transition-delay: 0.5s">
+    <p>© 2023 ZARA CREATES. ALL VIBES RESERVED.</p>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.querySelector('.cursor');
+    const cursorFollower = document.querySelector('.cursor-follower');
+    
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      
+      setTimeout(() => {
+        cursorFollower.style.left = e.clientX + 'px';
+        cursorFollower.style.top = e.clientY + 'px';
+      }, 100);
+    });
+    
+    // Interactive cursor effects
+    const interactiveElements = document.querySelectorAll('a, button, .project-card, .skill');
+    
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        cursor.style.backgroundColor = 'var(--electric-blue)';
+        cursor.style.opacity = '0.5';
+        cursorFollower.style.transform = 'translate(-50%, -50%) scale(0.5)';
+        cursorFollower.style.borderColor = 'var(--neon-pink)';
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursor.style.backgroundColor = 'transparent';
+        cursor.style.opacity = '1';
+        cursorFollower.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursorFollower.style.borderColor = 'var(--neon-pink)';
+      });
+    });
+    
+    // Scroll animations
+    const animateElements = document.querySelectorAll('.animate-in');
+    
+    const animateOnScroll = () => {
+      animateElements.forEach(el => {
+        const elTop = el.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elTop < windowHeight - 100) {
+          el.classList.add('active');
+        }
+      });
+    };
+    
+    // Initial check
+    animateOnScroll();
+    
+    // Check on scroll
+    window.addEventListener('scroll', animateOnScroll);
+  </script>
+</body>
+</html>
